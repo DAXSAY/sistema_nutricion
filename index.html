@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NutriClínica &amp; Fit Pro v3.0 — Sistema Modular y Responsivo</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Barra Superior Móvil / Tablet (Responsiva) -->
+  <header class="mobile-topbar">
+    <div class="mobile-brand">
+      <span class="brand-icon-sm">🧬</span>
+      <strong>NutriClínica<span>Pro 3.0</span></strong>
+    </div>
+    <div class="mobile-topbar-actions">
+      <button type="button" class="btn-secondary btn-sm" id="btn-load-demo-mobile">⚡ Demo</button>
+      <button type="button" class="menu-toggle-btn" id="btn-mobile-menu" aria-label="Menú">☰ Módulos</button>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- Sidebar Principal -->
+    <aside class="sidebar" id="app-sidebar">
+      <div>
+        <div class="brand">
+          <div class="brand-icon">🧬</div>
+          <div>
+            <h1>NutriClínica<span>Pro</span></h1>
+            <p>Bioimpedancia · Nutrición · Entreno</p>
+          </div>
+        </div>
+
+        <nav class="nav-menu">
+          <button class="nav-btn active" data-tab="tab-evaluation">
+            <span class="nav-icon">📋</span>
+            <span>1. Evaluación Modular</span>
+          </button>
+          <button class="nav-btn" data-tab="tab-plan">
+            <span class="nav-icon">📅</span>
+            <span>2. Plan &amp; Resultados</span>
+          </button>
+          <button class="nav-btn" data-tab="tab-macros-board">
+            <span class="nav-icon">📊</span>
+            <span>3. Base de Macros y Alimentos</span>
+          </button>
+          <button class="nav-btn" data-tab="tab-hand-guide">
+            <span class="nav-icon">🖐️</span>
+            <span>4. Guía de Medidas (10 Tipos)</span>
+          </button>
+          <button class="nav-btn" data-tab="tab-patients">
+            <span class="nav-icon">👥</span>
+            <span>5. Historial de Alumnos</span>
+            <span class="badge" id="patient-count-badge">0</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="btn-secondary full-width" id="btn-load-demo">
+          ⚡ Cargar Caso Clínico Demo
+        </button>
+      </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+      <!-- =================================================================== -->
+      <!-- TAB 1: EVALUACIÓN DEL ALUMNO ORGANIZADA POR MÓDULOS DIGERIBLES      -->
+      <!-- =================================================================== -->
+      <section id="tab-evaluation" class="tab-panel active">
+        <header class="page-header compact-header">
+          <div>
+            <span class="eyebrow">EVALUACIÓN PASO A PASO POR MÓDULOS · SIN SATURACIÓN VISUAL</span>
+            <h2>Ficha del Alumno: Navega por Cada Módulo</h2>
+          </div>
+          <div class="header-actions">
+            <button type="button" class="btn-outline btn-sm" id="btn-toggle-all-eval-modules">
+              🗂️ Ver Todos los Módulos Juntos
+            </button>
+            <button type="button" class="btn-outline btn-sm" id="btn-reset-form">Limpiar</button>
+          </div>
+        </header>
+
+        <!-- Barra de Resumen en Vivo Compacta (Siempre visible arriba) -->
+        <div class="bia-live-summary-panel" id="bia-live-summary-panel"></div>
+
+        <!-- Selector de Módulos de Evaluación (Wizard Tabs) -->
+        <div class="module-stepper" id="eval-module-stepper">
+          <button type="button" class="module-step-btn active" onclick="switchEvalModule(0)">
+            <span class="m-num">1</span>
+            <span>👤 Perfil y Entreno</span>
+          </button>
+          <button type="button" class="module-step-btn" onclick="switchEvalModule(1)">
+            <span class="m-num">2</span>
+            <span>⚖️ Bioimpedancia</span>
+          </button>
+          <button type="button" class="module-step-btn" onclick="switchEvalModule(2)">
+            <span class="m-num">3</span>
+            <span>🩺 Patologías (12)</span>
+          </button>
+          <button type="button" class="module-step-btn" onclick="switchEvalModule(3)">
+            <span class="m-num">4</span>
+            <span>🍽️ Hábitos Hoy</span>
+          </button>
+          <button type="button" class="module-step-btn" onclick="switchEvalModule(4)">
+            <span class="m-num">5</span>
+            <span>📸 Fotos Local</span>
+          </button>
+        </div>
+
+        <form id="nutrition-form" class="form-grid">
+          <!-- MÓDULO 1: Datos del Alumno, Entrenamiento y Modalidad -->
+          <div class="card eval-module-card active-module" data-eval-module="0">
+            <div class="card-header">
+              <span class="step-number">1</span>
+              <div>
+                <h3>Módulo 1: Perfil del Alumno, Entrenamiento y Modo de Medición</h3>
+                <p>Datos básicos, nivel de actividad diaria, modalidad de ejercicio y preferencia de medición (gramos o mano)</p>
+              </div>
+            </div>
+
+            <div class="field-grid cols-4">
+              <div class="form-group">
+                <label for="patientName">Nombre completo del alumno / cliente *</label>
+                <input type="text" id="patientName" required placeholder="Ej. Carlos Mendoza Vargas" />
+              </div>
+
+              <div class="form-group">
+                <label for="patientWhatsapp">📲 WhatsApp del Cliente (para envío PDF)</label>
+                <input type="tel" id="patientWhatsapp" placeholder="Ej. +51 987 654 321" />
+              </div>
+
+              <div class="form-group">
+                <label for="patientCategory">Perfil Biológico / Etapa *</label>
+                <select id="patientCategory" required>
+                  <option value="varon">Varón Adulto (19–64 años)</option>
+                  <option value="mujer">Mujer Adulta (19–64 años)</option>
+                  <option value="adolescente_m">Adolescente Varón (12–18 años)</option>
+                  <option value="adolescente_f">Adolescente Mujer (12–18 años)</option>
+                  <option value="adulto_mayor_m">Adulto Mayor Varón (+65 años)</option>
+                  <option value="adulto_mayor_f">Adulto Mayor Mujer (+65 años)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="patientAge">Edad Cronológica (años) *</label>
+                <input type="number" id="patientAge" min="10" max="105" value="38" required />
+              </div>
+
+              <div class="form-group">
+                <label for="patientHeight">Talla / Estatura (cm) *</label>
+                <input type="number" id="patientHeight" min="110" max="230" value="170" required />
+              </div>
+
+              <div class="form-group">
+                <label for="activityLevel">Actividad Física Diaria (NEAT)</label>
+                <select id="activityLevel">
+                  <option value="1.2">Sedentario (&lt;4,000 pasos/día)</option>
+                  <option value="1.375" selected>Ligero (1–3 días/sem)</option>
+                  <option value="1.55">Moderado (3–5 días/sem)</option>
+                  <option value="1.725">Intenso (6–7 días/sem)</option>
+                  <option value="1.9">Atleta / Doble turno</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="trainingType">Modalidad de Entrenamiento</label>
+                <select id="trainingType">
+                  <option value="fuerza_cardio_mixto" selected>🏋️+🏃 Fuerza + Cardio Metabólico</option>
+                  <option value="hipertrofia_gym">💪 Musculación / Hipertrofia Gym</option>
+                  <option value="funcional_hiit">🔥 Funcional / HIIT</option>
+                  <option value="cardio_salud">🚶 Caminata / Bajo Impacto</option>
+                  <option value="casa_bandas">🏠 En Casa (Mancuernas / Bandas)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="trainingDays">Días de Entreno / Semana</label>
+                <select id="trainingDays">
+                  <option value="2">2 días / semana</option>
+                  <option value="3" selected>3 días / semana</option>
+                  <option value="4">4 días / semana</option>
+                  <option value="5">5 días / semana</option>
+                  <option value="6">6 días / semana</option>
+                </select>
+              </div>
+
+              <div class="form-group span-2">
+                <label for="patientGoal">Objetivo Clínico y Corporal Principal *</label>
+                <select id="patientGoal" class="highlight-select">
+                  <option value="perdida_grasa">🔥 Reducir % Grasa Corporal y Grasa Visceral</option>
+                  <option value="recomposicion_corporal">⚡ Recomposición Corporal (Bajar Grasa + Subir Músculo)</option>
+                  <option value="control_metabolico" selected>🩺 Controlar Patologías, Glucosa y Colesterol</option>
+                  <option value="aumento_masa">💪 Hipertrofia / Ganar Masa Muscular</option>
+                  <option value="mantenimiento">⚖️ Mantenimiento Saludable y Energía</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="portionMode">¿Cómo medirá sus alimentos el alumno? *</label>
+                <select id="portionMode" class="highlight-select">
+                  <option value="gramos">⚖️ Exacto en Gramos (100g / 20g) + Equivalencia en Mano</option>
+                  <option value="mano_mixto" selected>🖐️ + 🥄 Porciones con la Mano + Medidas Caseras + Gramos</option>
+                  <option value="mano_puro">🖐️ Solo Porciones con la Mano (Sin Pesar Nada)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="biaWaistCm">📏 Perímetro de Cintura (cm)</label>
+                <input type="number" id="biaWaistCm" min="45" max="180" step="0.5" value="96" placeholder="Ej. 96 cm" />
+              </div>
+            </div>
+
+            <div class="module-nav-footer">
+              <span>Paso 1 de 5</span>
+              <button type="button" class="btn-primary" onclick="switchEvalModule(1)">Siguiente: ⚖️ Bioimpedancia →</button>
+            </div>
+          </div>
+
+          <!-- MÓDULO 2: BALANZA DE BIOIMPEDANCIA -->
+          <div class="card bia-card-highlight eval-module-card" data-eval-module="1">
+            <div class="card-header">
+              <span class="step-number">2</span>
+              <div style="flex:1;">
+                <div class="section-title-row">
+                  <h3>Módulo 2: Datos de Balanza de Bioimpedancia y Semáforo Clínico</h3>
+                  <div class="header-actions">
+                    <button type="button" class="btn-secondary btn-sm" id="btn-auto-estimate-bia">
+                      🧮 Auto-Estimar Bioimpedancia
+                    </button>
+                    <button type="button" class="btn-outline btn-sm" id="btn-toggle-bia-ranges">
+                      📊 Ver Tabla de Rangos (Bajo · Óptimo · Alerta)
+                    </button>
+                  </div>
+                </div>
+                <p>Ingresa Peso, % Grasa, % Masa Muscular, IMC, Grasa Visceral y Edad Metabólica</p>
+              </div>
+            </div>
+
+            <div class="bia-inputs-grid">
+              <div class="bia-input-box">
+                <div class="bia-box-top">
+                  <label for="patientWeight">1. Peso Corporal (kg) *</label>
+                  <span class="bia-state-pill" id="badge-weight-state">Base</span>
+                </div>
+                <input type="number" id="patientWeight" min="25" max="250" step="0.1" value="84.5" required />
+                <small id="hint-weight">Peso en balanza</small>
+              </div>
+
+              <div class="bia-input-box">
+                <div class="bia-box-top">
+                  <label for="biaBmi">2. IMC (kg/m²)</label>
+                  <span class="bia-state-pill" id="badge-bmi-state">Calculando...</span>
+                </div>
+                <input type="number" id="biaBmi" step="0.1" readonly class="readonly-input" value="29.2" />
+                <small id="hint-bmi">Óptimo: 18.5–24.9 · Alerta: ≥30</small>
+              </div>
+
+              <div class="bia-input-box">
+                <div class="bia-box-top">
+                  <label for="biaBodyFat">3. % Grasa Corporal *</label>
+                  <span class="bia-state-pill" id="badge-fat-state">Evaluando...</span>
+                </div>
+                <input type="number" id="biaBodyFat" min="3" max="65" step="0.1" value="27.8" required />
+                <small id="hint-fat">Evaluado según sexo y edad</small>
+              </div>
+
+              <div class="bia-input-box">
+                <div class="bia-box-top">
+                  <label for="biaMuscleMass">4. % Masa Muscular *</label>
+                  <span class="bia-state-pill" id="badge-muscle-state">Evaluando...</span>
+                </div>
+                <input type="number" id="biaMuscleMass" min="15" max="60" step="0.1" value="31.4" required />
+                <small id="hint-muscle">Músculo (~<span id="live-muscle-kg">26.5</span> kg)</small>
+              </div>
+
+              <div class="bia-input-box">
+                <div class="bia-box-top">
+                  <label for="biaVisceralFat">5. Grasa Visceral (1–59) *</label>
+                  <span class="bia-state-pill" id="badge-visceral-state">Evaluando...</span>
+                </div>
+                <input type="number" id="biaVisceralFat" min="1" max="59" step="0.5" value="13" required />
+                <small id="hint-visceral">Óptimo: 1–9 · Alerta: ≥15</small>
+              </div>
+
+              <div class="bia-input-box">
+                <div class="bia-box-top">
+                  <label for="biaMetabolicAge">6. Edad Metabólica *</label>
+                  <span class="bia-state-pill" id="badge-metage-state">Evaluando...</span>
+                </div>
+                <input type="number" id="biaMetabolicAge" min="12" max="100" step="1" value="47" required />
+                <small id="hint-metage">Comparado con su edad real</small>
+              </div>
+
+              <div class="bia-input-box">
+                <div class="bia-box-top">
+                  <label for="biaBodyWater">7. % Agua Corporal</label>
+                  <span class="bia-state-pill" id="badge-water-state">Hidratación</span>
+                </div>
+                <input type="number" id="biaBodyWater" min="30" max="80" step="0.1" value="51.2" />
+                <small id="hint-water">Varón: 50–65% · Mujer: 45–60%</small>
+              </div>
+
+              <div class="bia-input-box">
+                <div class="bia-box-top">
+                  <label for="biaBmr">8. TMB Basal (kcal)</label>
+                  <span class="bia-state-pill ok" id="badge-bmr-state">Katch-McArdle</span>
+                </div>
+                <input type="number" id="biaBmr" readonly class="readonly-input" value="1740" />
+                <small id="hint-bmr">Según masa magra real</small>
+              </div>
+            </div>
+
+            <!-- Tabla Desplegable de Parámetros Clínicos de Bioimpedancia -->
+            <div id="bia-reference-drawer" class="bia-reference-drawer hidden mt-16">
+              <h4>📊 Tabla Clínica Oficial de Parámetros de Bioimpedancia (Estados Bajos, Óptimos, Precaución y Alerta)</h4>
+              <div class="table-responsive mt-8">
+                <table class="clinical-table compact-table">
+                  <thead>
+                    <tr>
+                      <th>Parámetro</th>
+                      <th>Perfil / Edad</th>
+                      <th>🔵 Bajo</th>
+                      <th>🟢 Óptimo</th>
+                      <th>🟡 Precaución</th>
+                      <th>🔴 Alerta Clínica</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>IMC</strong></td>
+                      <td>Adultos</td>
+                      <td>&lt; 18.5 kg/m²</td>
+                      <td><strong>18.5 – 24.9 kg/m²</strong></td>
+                      <td>25.0 – 29.9 kg/m²</td>
+                      <td><strong>≥ 30.0 kg/m²</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>% Grasa (Varón)</strong></td>
+                      <td>20–39a / 40–59a / 60+a</td>
+                      <td>&lt;8% / &lt;11% / &lt;13%</td>
+                      <td><strong>8–19.9% / 11–21.9% / 13–24.9%</strong></td>
+                      <td>20–24.9% / 22–27.9% / 25–29.9%</td>
+                      <td><strong>≥25% / ≥28% / ≥30%</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>% Grasa (Mujer)</strong></td>
+                      <td>20–39a / 40–59a / 60+a</td>
+                      <td>&lt;21% / &lt;23% / &lt;24%</td>
+                      <td><strong>21–32.9% / 23–33.9% / 24–35.9%</strong></td>
+                      <td>33–38.9% / 34–39.9% / 36–41.9%</td>
+                      <td><strong>≥39% / ≥40% / ≥42%</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>% Masa Muscular</strong></td>
+                      <td>Varón / Mujer</td>
+                      <td>30–33.2% / 21.5–24.2%</td>
+                      <td><strong>33.3–39.3% / 24.3–30.3%</strong></td>
+                      <td><strong>&gt;39.4% / &gt;30.4% (Atlético)</strong></td>
+                      <td><strong>&lt;30.0% V / &lt;21.5% M (Sarcopenia)</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Grasa Visceral</strong></td>
+                      <td>Escala 1–59</td>
+                      <td>Nivel 1–2</td>
+                      <td><strong>Nivel 1–9</strong></td>
+                      <td>Nivel 10–14</td>
+                      <td><strong>Nivel ≥ 15 (&gt;100 cm² VFA)</strong></td>
+                    </tr>
+                    <tr>
+                      <td><strong>Edad Metabólica</strong></td>
+                      <td>vs. Edad Real</td>
+                      <td>-5 a -12 años</td>
+                      <td><strong>≤ Edad Real</strong></td>
+                      <td>+1 a +5 años</td>
+                      <td><strong>+6 o más años sobre edad real</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="module-nav-footer">
+              <button type="button" class="btn-outline" onclick="switchEvalModule(0)">← Anterior: Perfil</button>
+              <span>Paso 2 de 5</span>
+              <button type="button" class="btn-primary" onclick="switchEvalModule(2)">Siguiente: 🩺 Patologías →</button>
+            </div>
+          </div>
+
+          <!-- MÓDULO 3: PATOLOGÍAS CLÍNICAS -->
+          <div class="card eval-module-card" data-eval-module="2">
+            <div class="card-header">
+              <span class="step-number">3</span>
+              <div>
+                <h3>Módulo 3: Cuadro Clínico y Patologías (12 Protocolos Médicos)</h3>
+                <p>Marca solo las patologías que presente el alumno. El texto detallado se aplica automáticamente a su plan.</p>
+              </div>
+            </div>
+
+            <div class="pathology-grid" id="pathology-list">
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="diabetes_tipo2" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>🩸 Diabetes (Tipo 2 / 1)</strong>
+                    <span class="chip-badge red">Control Glucémico</span>
+                  </div>
+                  <small>Secuencia fibra → proteína → carbohidrato de bajo IG.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="prediabetes" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>📉 Prediabetes / Insulina</strong>
+                    <span class="chip-badge amber">Sensibilidad GLUT-4</span>
+                  </div>
+                  <small>Cero harinas solas; blindaje proteico en cada comida.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="hipertension" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>❤️ Hipertensión Arterial</strong>
+                    <span class="chip-badge red">Protocolo DASH</span>
+                  </div>
+                  <small>Bajo sodio, alto potasio/magnesio y sin apnea al entrenar.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="hipotension" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>💧 Hipotensión (Presión Baja)</strong>
+                    <span class="chip-badge blue">Soporte Volemia</span>
+                  </div>
+                  <small>4–5 tomas moderadas e hidratación con electrolitos.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="dislipidemia" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>🫀 Colesterol / Triglicéridos</strong>
+                    <span class="chip-badge amber">Cardioprotector</span>
+                  </div>
+                  <small>Cero frituras; rico en Omega-3, avena, chía y palta.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="higado_graso" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>🫁 Hígado Graso (MASLD)</strong>
+                    <span class="chip-badge amber">Guía EASL</span>
+                  </div>
+                  <small>Cero fructosa líquida/alcohol; colina y crucíferas.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="acido_urico" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>🦶 Ácido Úrico Alto / Gota</strong>
+                    <span class="chip-badge red">Bajo en Purinas</span>
+                  </div>
+                  <small>Sin vísceras ni mariscos; proteína de huevo, aves y lácteos.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="gastritis" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>🔥 Gastritis / Reflujo / Colon</strong>
+                    <span class="chip-badge blue">Mucosa Digestiva</span>
+                  </div>
+                  <small>Cocción suave al vapor/plancha, sin irritantes ni picantes.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="hipotiroidismo" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>🦋 Hipotiroidismo / SOP</strong>
+                    <span class="chip-badge blue">Metabolismo / Selenio</span>
+                  </div>
+                  <small>Selenio, zinc, crucíferas cocidas y separación de pastilla.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="anemia" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>🛡️ Anemia Ferropénica</strong>
+                    <span class="chip-badge red">Hierro + Vitamina C</span>
+                  </div>
+                  <small>Hierro hemo + limón; sin té ni café cerca del almuerzo.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="renal_leve" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>🫘 Cuidado Renal / Litiasis</strong>
+                    <span class="chip-badge amber">Guía KDOQI</span>
+                  </div>
+                  <small>Proteína modulada (~1.0 g/kg) sin fósforo inorgánico.</small>
+                </span>
+              </label>
+
+              <label class="pathology-chip">
+                <input type="checkbox" name="pathologies" value="sarcopenia_articular" />
+                <span class="chip-box">
+                  <div class="chip-top">
+                    <strong>🦴 Sarcopenia / Articulaciones</strong>
+                    <span class="chip-badge blue">Anabolismo / Sin Impacto</span>
+                  </div>
+                  <small>Umbral de leucina por comida y fuerza guiada sin saltos.</small>
+                </span>
+              </label>
+            </div>
+
+            <div class="field-grid cols-2 mt-16">
+              <div class="form-group">
+                <label for="clinicalLabs">Valores de Laboratorio / Presión (Opcional)</label>
+                <input type="text" id="clinicalLabs" placeholder="Ej. Glucosa 135 mg/dL, HbA1c 6.8%, PA 145/92 mmHg..." />
+              </div>
+              <div class="form-group">
+                <label for="clinicalNotes">Medicamentos, Alergias o Intolerancias</label>
+                <input type="text" id="clinicalNotes" placeholder="Ej. Toma Metformina, Losartán, intolerante a la lactosa..." />
+              </div>
+            </div>
+
+            <div class="module-nav-footer">
+              <button type="button" class="btn-outline" onclick="switchEvalModule(1)">← Anterior: Bioimpedancia</button>
+              <span>Paso 3 de 5</span>
+              <button type="button" class="btn-primary" onclick="switchEvalModule(3)">Siguiente: 🍽️ Hábitos →</button>
+            </div>
+          </div>
+
+          <!-- MÓDULO 4: HÁBITOS ACTUALES -->
+          <div class="card eval-module-card" data-eval-module="3">
+            <div class="card-header">
+              <span class="step-number">4</span>
+              <div>
+                <h3>Módulo 4: Hábitos Actuales y Frecuencia de Comidas</h3>
+                <p>¿Cómo come hoy el alumno y cuántos días seguirá el plan?</p>
+              </div>
+            </div>
+
+            <div class="field-grid cols-3">
+              <div class="form-group">
+                <label for="mealsPerDayCurrent">Comidas al día actualmente</label>
+                <select id="mealsPerDayCurrent">
+                  <option value="2">2 veces al día</option>
+                  <option value="3" selected>3 veces al día</option>
+                  <option value="4">4 veces al día</option>
+                  <option value="5">5 veces al día</option>
+                  <option value="picoteo">Picotea todo el día</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="mealsPerDayTarget">Comidas en su Nuevo Plan *</label>
+                <select id="mealsPerDayTarget">
+                  <option value="3">3 comidas (Desayuno, Almuerzo, Cena)</option>
+                  <option value="4" selected>4 comidas (+ Media Tarde / Post-Entreno)</option>
+                  <option value="5">5 comidas (+ Media Mañana y Tarde)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="daysPerWeek">Días del Plan por Semana *</label>
+                <select id="daysPerWeek">
+                  <option value="5">5 días (Lunes a Viernes)</option>
+                  <option value="6">6 días (Lunes a Sábado)</option>
+                  <option value="7" selected>7 días (Semana completa)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="hand-estimator-box mt-16">
+              <div class="field-grid cols-4">
+                <div class="mini-card">
+                  <span>🤲 Carbohidratos hoy</span>
+                  <select id="portionCarbs">
+                    <option value="baja">1 mano (~100g) o menos</option>
+                    <option value="moderada">2 manos (~200g)</option>
+                    <option value="alta" selected>3–4 manos (~350g arroz+papa)</option>
+                  </select>
+                </div>
+                <div class="mini-card">
+                  <span>🤚 Proteína hoy</span>
+                  <select id="portionProtein">
+                    <option value="baja" selected>Menos de 1 palma (&lt;80g)</option>
+                    <option value="adecuada">1 palma (~120g)</option>
+                    <option value="alta">1.5–2 palmas (~180g)</option>
+                  </select>
+                </div>
+                <div class="mini-card">
+                  <span>✊ Verduras hoy</span>
+                  <select id="portionVeggies">
+                    <option value="nula" selected>0 puños (casi nada)</option>
+                    <option value="poca">Medio puño (~60g)</option>
+                    <option value="abundante">1–2 puños (~220g)</option>
+                  </select>
+                </div>
+                <div class="mini-card">
+                  <span>🥤 Bebidas y Frituras</span>
+                  <select id="portionDrinks">
+                    <option value="agua">Agua pura y sin frituras</option>
+                    <option value="jugos" selected>Jugos/gaseosas o frituras</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group mt-12">
+              <label for="currentDietDescription">Resumen rápido de un día típico del alumno</label>
+              <textarea id="currentDietDescription" rows="2" placeholder="Ej. Desayuna jugo y 2 panes. Almuerza bastante arroz con papa frita y pollo. Cena pan con café..."></textarea>
+            </div>
+
+            <div class="module-nav-footer">
+              <button type="button" class="btn-outline" onclick="switchEvalModule(2)">← Anterior: Patologías</button>
+              <span>Paso 4 de 5</span>
+              <button type="button" class="btn-primary" onclick="switchEvalModule(4)">Siguiente: 📸 Fotos Local →</button>
+            </div>
+          </div>
+
+          <!-- MÓDULO 5: ESCÁNER LOCAL DE FOTOS -->
+          <div class="card eval-module-card" data-eval-module="4">
+            <div class="card-header">
+              <span class="step-number">5</span>
+              <div>
+                <h3>Módulo 5: Escáner Local de Fotos de Platos (Opcional · 100% Privado en tu PC)</h3>
+                <p>Analiza píxeles por color en <code>HTML5 Canvas</code> para medir % de vegetales, harinas y proteínas sin subir nada a internet</p>
+              </div>
+            </div>
+
+            <details class="clean-details">
+              <summary>🔬 Ver explicación técnica de cómo funciona el análisis local de fotos (3 motores)</summary>
+              <div class="explainer-steps mt-8">
+                <div class="exp-step">
+                  <span class="exp-badge">1. Segmentación HSV en Canvas</span>
+                  <p>Escanea los píxeles de la foto en la memoria RAM de tu PC clasificando tonos verdes (vegetales ✊), almidones claros (arroz/papa 🤲) y proteínas/frituras doradas (🤚/👍).</p>
+                </div>
+                <div class="exp-step">
+                  <span class="exp-badge">2. Contraste Método del Plato</span>
+                  <p>Compara el % detectado contra la proporción ideal (50% verdura · 25% proteína · 25% carbohidrato complejo).</p>
+                </div>
+                <div class="exp-step">
+                  <span class="exp-badge">3. Etiquetado del Asesor</span>
+                  <p>Te permite confirmar o añadir notas de cocción para que el diagnóstico impreso sea 100% exacto.</p>
+                </div>
+              </div>
+            </details>
+
+            <div class="photo-upload-zone mt-12" id="photo-dropzone">
+              <input type="file" id="photoInput" accept="image/*" multiple hidden />
+              <div class="dropzone-content">
+                <div class="upload-icon">📸</div>
+                <h4>Arrastra o selecciona aquí las fotos de comida del alumno</h4>
+                <button type="button" class="btn-secondary mt-8" id="btn-trigger-upload">Subir y Escanear Fotos</button>
+              </div>
+            </div>
+
+            <div id="photo-gallery" class="photo-gallery"></div>
+
+            <div class="module-nav-footer">
+              <button type="button" class="btn-outline" onclick="switchEvalModule(3)">← Anterior: Hábitos</button>
+              <span>Paso 5 de 5</span>
+            </div>
+          </div>
+
+          <!-- Barra de Acción Permanente para Generar Plan -->
+          <div class="submit-bar">
+            <div class="submit-info">
+              <strong>¿Listo para generar el Plan Modular del Alumno?</strong>
+              <span>Obtendrás resultados organizados en 5 módulos limpios: Bioimpedancia, Menú Diario, Entrenamiento, Patologías y Guion del Asesor.</span>
+            </div>
+            <button type="submit" class="btn-primary btn-large">
+              🚀 Generar Plan Modular Completo
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 2: PLAN GENERADO ORGANIZADO EN 5 MÓDULOS VISUALES DIGERIBLES    -->
+      <!-- =================================================================== -->
+      <section id="tab-plan" class="tab-panel">
+        <div id="empty-plan-state" class="empty-state">
+          <div class="empty-icon">🧬</div>
+          <h3>Todavía no has generado un Plan</h3>
+          <p>Completa la evaluación o haz clic en "⚡ Cargar Caso Demo Completo" en el menú izquierdo.</p>
+          <button class="btn-primary mt-16" id="btn-go-eval">Ir a Evaluación Modular</button>
+        </div>
+
+        <div id="plan-results-container" class="hidden">
+          <header class="page-header compact-header">
+            <div>
+              <span class="eyebrow">RESULTADOS ORGANIZADOS POR MÓDULOS · 100% ASERTIVO</span>
+              <h2 id="plan-patient-title">Plan Nutricional y de Entrenamiento</h2>
+              <p id="plan-patient-subtitle"></p>
+            </div>
+            <div class="header-actions">
+              <select id="live-portion-mode-switcher" class="mode-switcher-select" title="Cambiar visualización de porciones">
+                <option value="gramos">⚖️ Mano + Gramos Exactos</option>
+                <option value="mano_mixto">🖐️+🥄 Mano + Caseras</option>
+                <option value="mano_puro">🖐️ Solo Mano</option>
+              </select>
+              <button class="btn-outline btn-sm" id="btn-save-patient">💾 Guardar Alumno</button>
+              <button class="btn-secondary btn-sm" id="btn-send-whatsapp">📲 Enviar a WhatsApp</button>
+              <button class="btn-primary btn-sm" id="btn-print-plan">🖨️ Descargar PDF Cliente</button>
+            </div>
+          </header>
+
+          <!-- NAVEGACIÓN INTERNA POR MÓDULOS DEL PLAN (Evita saturación visual) -->
+          <div class="plan-module-tabs" id="plan-module-tabs">
+            <button type="button" class="plan-mod-btn active" onclick="switchPlanSubModule('pmod-bia')">
+              ⚖️ 1. Bioimpedancia &amp; Macros
+            </button>
+            <button type="button" class="plan-mod-btn" onclick="switchPlanSubModule('pmod-menu')">
+              🍽️ 2. Menú Diario &amp; Plato
+            </button>
+            <button type="button" class="plan-mod-btn" onclick="switchPlanSubModule('pmod-training')">
+              🏋️ 3. Plan de Entrenamiento
+            </button>
+            <button type="button" class="plan-mod-btn" onclick="switchPlanSubModule('pmod-clinical')">
+              🩺 4. Patologías, Fotos &amp; Alimentos
+            </button>
+            <button type="button" class="plan-mod-btn" onclick="switchPlanSubModule('pmod-coach')">
+              🗣️ 5. Guion para el Asesor
+            </button>
+            <button type="button" class="plan-mod-btn outline-mod" onclick="switchPlanSubModule('all')">
+              🗂️ Ver Todo Junto
+            </button>
+          </div>
+
+          <!-- SUB-MÓDULO 1: BIOIMPEDANCIA + METAS DE MACROS Y MANO -->
+          <div class="plan-submodule active-submod" id="pmod-bia">
+            <div class="hand-summary-banner">
+              <div class="hand-banner-title">
+                <h3>🎯 Metas Diarias Exactas: Macronutrientes (Gramos/Día) y Cuota con la Mano</h3>
+                <p id="res-hand-explanation">Calibrado según su masa libre de grasa real, patologías y desgaste físico:</p>
+              </div>
+              <div class="summary-grid" id="res-hand-quotas-grid"></div>
+              <div class="clinical-metrics-bar mt-12" id="res-clinical-metrics-bar" style="color:#142620;"></div>
+            </div>
+
+            <div class="card mt-16">
+              <div class="section-title-row">
+                <h3>⚖️ Semáforo de su Balanza de Bioimpedancia (Bajo · Óptimo · Precaución · Alerta)</h3>
+                <span class="eyebrow" id="res-bia-global-tag">6 Parámetros Evaluados</span>
+              </div>
+              <div class="bia-results-grid mt-12" id="res-bia-cards-grid"></div>
+            </div>
+          </div>
+
+          <!-- SUB-MÓDULO 2: MENÚ DÍA POR DÍA + ARQUITECTURA DEL PLATO -->
+          <div class="plan-submodule" id="pmod-menu">
+            <div class="card">
+              <div class="plan-days-header">
+                <div>
+                  <h3>📅 Plan de Alimentación Día por Día</h3>
+                  <p id="res-schedule-summary"></p>
+                </div>
+                <div class="day-tabs" id="day-selector-tabs"></div>
+              </div>
+
+              <div id="day-meals-container" class="day-meals-container"></div>
+
+              <!-- Vista completa para impresión -->
+              <div id="all-days-print-container" class="print-only"></div>
+            </div>
+
+            <div class="card mt-16">
+              <h3>🍽️ Cómo Servir el Plato Principal (Gramos y Método de la Mano)</h3>
+              <div class="plate-guide-layout mt-12" id="res-plate-guide"></div>
+            </div>
+          </div>
+
+          <!-- SUB-MÓDULO 3: PLAN DE ENTRENAMIENTO FÍSICO (ACSM) -->
+          <div class="plan-submodule" id="pmod-training">
+            <div class="card training-plan-card">
+              <div class="section-title-row">
+                <div>
+                  <span class="eyebrow">PRESCRIPCIÓN CIENTÍFICA DE EJERCICIO · ACSM &amp; NSCA</span>
+                  <h3 id="res-training-title">🏋️ Plan de Entrenamiento Adaptado</h3>
+                </div>
+              </div>
+              <div id="res-training-summary" class="training-summary-box mt-12"></div>
+              <div id="res-training-schedule" class="training-schedule-grid mt-16"></div>
+            </div>
+          </div>
+
+          <!-- SUB-MÓDULO 4: PATOLOGÍAS, HÁBITOS, FOTOS Y SEMÁFORO DE ALIMENTOS -->
+          <div class="plan-submodule" id="pmod-clinical">
+            <div class="two-col-layout">
+              <div class="card">
+                <h3>🔍 Corrección de Hábitos Actuales</h3>
+                <ul class="diagnostic-list mt-8" id="res-habit-analysis"></ul>
+              </div>
+
+              <div class="card">
+                <h3>🩺 Protocolo Clínico según sus Patologías</h3>
+                <div id="res-pathology-guidelines" class="guidelines-stack mt-8"></div>
+              </div>
+            </div>
+
+            <div class="card mt-16 hidden" id="res-photos-card">
+              <h3>📸 Auditoría Local de Fotos de sus Platos</h3>
+              <div id="res-photos-grid" class="evaluated-photos-grid mt-12"></div>
+            </div>
+
+            <div class="two-col-layout mt-16">
+              <div class="card">
+                <h3>✅ Alimentos Permitidos y Terapéuticos</h3>
+                <div id="res-allowed-foods" class="food-tags-container mt-8"></div>
+              </div>
+              <div class="card">
+                <h3>🚫 Alimentos Prohibidos o a Evitar</h3>
+                <div id="res-restricted-foods" class="food-tags-container mt-8"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-MÓDULO 5: FUNDAMENTO CIENTÍFICO Y GUION DEL ASESOR (Integrado internamente para el plan) -->
+          <div class="plan-submodule" id="pmod-coach">
+            <div class="card coach-script-card">
+              <span class="eyebrow">FUNDAMENTO CLÍNICO Y CIENTÍFICO INTERNO · EXCLUSIVO PARA EL ASESOR</span>
+              <h3>🗣️ Argumentos y Respaldo Científico para Explicarle este Plan al Cliente</h3>
+              <p style="font-size:13px;color:#526861;margin-top:4px;">El sistema cruza internamente los consensos científicos (ISSN, ACSM, ADA, EASL, KDOQI) con los datos de este alumno para darte el sustento exacto de su dieta:</p>
+              <div class="coach-talking-points mt-12" id="res-coach-script"></div>
+            </div>
+
+            <div class="two-col-layout mt-16">
+              <div class="card">
+                <h3>📚 Evidencia Científica que Sustenta este Plan</h3>
+                <div class="scientific-papers-list mt-8" id="res-plan-scientific-papers"></div>
+              </div>
+              <div class="card">
+                <h3>🛡️ Cómo Responder a Dudas u Objeciones de este Cliente</h3>
+                <div class="objections-list mt-8" id="res-plan-objections"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 3: BASE NUTRICIONAL DE MACROS Y SIMULADOR DE PLATO              -->
+      <!-- =================================================================== -->
+      <section id="tab-macros-board" class="tab-panel">
+        <header class="page-header compact-header">
+          <div>
+            <span class="eyebrow">BASE DE DATOS BROMATOLÓGICA INTERNA · CENAN / INS &amp; USDA FOODDATA CENTRAL</span>
+            <h2>📊 Tablero Clínico de Macronutrientes, Porciones y Equivalencias</h2>
+          </div>
+          <div class="header-actions">
+            <button type="button" class="btn-primary btn-sm" id="btn-view-macro-table" onclick="switchMacroSubView('table')">
+              📊 Base de Alimentos y Porciones
+            </button>
+            <button type="button" class="btn-outline btn-sm" id="btn-view-macro-sim" onclick="switchMacroSubView('sim')">
+              ⚖️ Simulador "¿Come de más o de menos?"
+            </button>
+          </div>
+        </header>
+
+        <!-- SUB-VISTA A: TABLA MAESTRA DE MACROS -->
+        <div id="macro-subview-table" class="card">
+          <div class="board-toolbar">
+            <div class="form-group" style="flex:2;min-width:200px;">
+              <label for="macroSearchInput">🔍 Buscar alimento o nutriente (ej. pollo, tomate, pescado, huevo, quinua, lentejas, palta...)</label>
+              <input type="text" id="macroSearchInput" placeholder="Escribe el alimento a consultar..." />
+            </div>
+            <div class="form-group" style="flex:1.4;min-width:180px;">
+              <label for="macroCategoryFilter">Grupo Nutricional</label>
+              <select id="macroCategoryFilter">
+                <option value="todos">Todos los grupos nutricionales</option>
+                <option value="proteina_magra">🍗 Carnes y Aves Magras</option>
+                <option value="pescado_marisco">🐟 Pescados y Mariscos</option>
+                <option value="huevo_lacteo">🥚 Huevos, Lácteos y Proteína</option>
+                <option value="legumbre_menestra">🫘 Menestras / Legumbres</option>
+                <option value="carbohidrato_complejo">🌾 Cereales, Tubérculos y Panes</option>
+                <option value="grasa_saludable">🥑 Grasas, Frutos Secos y Salsas</option>
+                <option value="verdura_fibrosa">🥦 Verduras, Tomate y Frutas</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:1;min-width:140px;">
+              <label for="customGramInput">⚖️ Calcular según Peso (g)</label>
+              <input type="number" id="customGramInput" min="5" max="1000" step="5" value="120" class="highlight-select" />
+            </div>
+          </div>
+
+          <div class="table-responsive mt-12">
+            <table class="clinical-table macro-master-table">
+              <thead>
+                <tr>
+                  <th>Alimento y Función Clínica</th>
+                  <th>Porción Estándar Recomendada<br/><small>(Medida de Mano / Casera)</small></th>
+                  <th>Macros por Porción Estándar<br/><small>(Proteína · Carbs · Grasa · Kcal)</small></th>
+                  <th>Densidad Base (Ref. 100g)<br/><small>(Composición CENAN / USDA)</small></th>
+                  <th id="th-custom-grams">Cálculo en 120 g<br/><small>(Según peso elegido)</small></th>
+                  <th>Simulador</th>
+                </tr>
+              </thead>
+              <tbody id="macro-board-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SUB-VISTA B: SIMULADOR DE PLATO REAL VS META -->
+        <div id="macro-subview-sim" class="card simulator-card hidden">
+          <div class="card-header">
+            <span class="step-number">⚖️</span>
+            <div>
+              <h3>Simulador en Vivo: "¿El Alumno Está Comiendo de Más o de Menos?"</h3>
+              <p>Arma un plato combinando alimentos por peso o por medida de mano y compáralo con la meta de tu alumno.</p>
+            </div>
+          </div>
+
+          <div class="simulator-controls">
+            <div class="form-group" style="flex:2;min-width:220px;">
+              <label for="simFoodSelect">Alimento de la Base de Datos</label>
+              <select id="simFoodSelect"></select>
+            </div>
+            <div class="form-group" style="flex:1;min-width:160px;">
+              <label for="simInputMode">Modo de Medición</label>
+              <select id="simInputMode">
+                <option value="gramos" selected>⚖️ Por Peso en Gramos (g)</option>
+                <option value="mano">🖐️ Por Medida de Mano / Porción</option>
+              </select>
+            </div>
+            <div class="form-group" style="flex:1;min-width:120px;">
+              <label for="simAmountInput" id="simAmountLabel">Cantidad en Gramos (g)</label>
+              <input type="number" id="simAmountInput" min="5" max="1500" step="5" value="120" />
+            </div>
+            <div class="form-group">
+              <div style="display:flex;gap:6px;">
+                <button type="button" class="btn-primary" id="btn-sim-add">+ Agregar al Plato</button>
+                <button type="button" class="btn-outline" id="btn-sim-clear">Vaciar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-gram-pills mt-8">
+            <span>Porciones frecuentes:</span>
+            <button type="button" class="gram-pill" onclick="setSimQuickGrams(30)">30 g (1 Scoop / Queso)</button>
+            <button type="button" class="gram-pill" onclick="setSimQuickGrams(50)">50 g (1/4 Palta / Pan)</button>
+            <button type="button" class="gram-pill" onclick="setSimQuickGrams(100)">100 g</button>
+            <button type="button" class="gram-pill" onclick="setSimQuickGrams(120)">120 g (1 Palma Estándar)</button>
+            <button type="button" class="gram-pill" onclick="setSimQuickGrams(150)">150 g (Filete Grande)</button>
+            <button type="button" class="gram-pill" onclick="setSimQuickGrams(200)">200 g</button>
+            <button type="button" class="gram-pill" onclick="setSimQuickGrams(250)">250 g (2 Puños Ensalada)</button>
+          </div>
+
+          <div id="sim-plate-items" class="sim-plate-items mt-12"></div>
+          <div id="sim-comparison-result" class="sim-comparison-result mt-12"></div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 4: GUÍA COMPLETA DE PORCIONES POR MANO Y MEDIDAS CASERAS (10 MÓDULOS) -->
+      <!-- =================================================================== -->
+      <section id="tab-hand-guide" class="tab-panel">
+        <header class="page-header compact-header">
+          <div>
+            <span class="eyebrow">SISTEMA ANTROPOMÉTRICO Y VOLUMÉTRICO COMPLETO · 10 MÓDULOS DE MEDICIÓN</span>
+            <h2>🖐️ Guía Completa de Medidas por Mano, Dedos y Equivalencias Caseras</h2>
+            <p>Las 10 referencias visuales estandarizadas en nutrición clínica para medir cualquier grupo de alimentos con exactitud.</p>
+          </div>
+        </header>
+
+        <div class="hand-cards-grid">
+          <!-- 1. Palma Abierta -->
+          <div class="hand-measure-card protein-border">
+            <div class="hand-emoji">🤚</div>
+            <div class="hand-tag">MÓDULO 1 · PROTEÍNAS FIRMES</div>
+            <h3>1 Palma Abierta (Sin Dedos)</h3>
+            <p class="hand-rule">Diámetro y grosor de tu palma (aprox. el grosor de una baraja de cartas).</p>
+            <ul class="hand-examples">
+              <li>🍗 Pechuga de pollo o pavo a la plancha (120 g)</li>
+              <li>🥩 Lomo magro de res o bistec (115 g)</li>
+              <li>🐟 Pescado oscuro firme: bonito, atún, jurel (125 g)</li>
+            </ul>
+            <div class="hand-equiv">Aporta: 28–35 g Proteína · 0 g Carbs · 2–6 g Grasa · ~155 kcal</div>
+          </div>
+
+          <!-- 2. Mano Completa Extendida -->
+          <div class="hand-measure-card protein-border">
+            <div class="hand-emoji">🖐️</div>
+            <div class="hand-tag">MÓDULO 2 · PESCADOS BLANCOS PLANOS</div>
+            <h3>1 Mano Completa (Con Dedos)</h3>
+            <p class="hand-rule">Como el pescado blanco es más delgado y tiene menos grasa, la porción abarca toda la mano extendida.</p>
+            <ul class="hand-examples">
+              <li>🐟 Filete de merluza, tilapia, lenguado o corvina (150–170 g)</li>
+              <li>🍳 Tortilla extendida de 4 claras de huevo</li>
+            </ul>
+            <div class="hand-equiv">Aporta: 30–34 g Proteína · 0 g Carbs · 1.5–2 g Grasa · ~140 kcal</div>
+          </div>
+
+          <!-- 3. Puño Cerrado -->
+          <div class="hand-measure-card veggie-border">
+            <div class="hand-emoji">✊</div>
+            <div class="hand-tag">MÓDULO 3 · VEGETALES COCIDOS Y TUBÉRCULOS</div>
+            <h3>1 Puño Cerrado</h3>
+            <p class="hand-rule">Equivale al volumen de 1 taza medidora estándar (240 ml).</p>
+            <ul class="hand-examples">
+              <li>🥦 Brócoli, coliflor, vainitas o zanahoria al vapor (130 g)</li>
+              <li>🍠 1 papa o camote entero cocido del tamaño de tu puño (130 g)</li>
+              <li>🍎 1 manzana, pera o naranja mediana entera</li>
+            </ul>
+            <div class="hand-equiv">Verduras: ~40 kcal (6g Carbs) · Tubérculo: ~115 kcal (24g Carbs)</div>
+          </div>
+
+          <!-- 4. Dos Manos en Cuenco -->
+          <div class="hand-measure-card veggie-border">
+            <div class="hand-emoji">🤲</div>
+            <div class="hand-tag">MÓDULO 4 · ENSALADAS CRUDAS Y HOJAS</div>
+            <h3>2 Manos Juntas en Cuenco</h3>
+            <p class="hand-rule">Las hojas crudas tienen mucho aire y agua; se miden juntando ambas manos abiertas.</p>
+            <ul class="hand-examples">
+              <li>🥗 Lechuga, espinaca, rúcula, acelga, berros frescos</li>
+              <li>🍅 Rodajas de tomate fresco, pepino, apio y pimiento (180–220 g)</li>
+            </ul>
+            <div class="hand-equiv">Aporta: 2 g Proteína · 5 g Carbs · 3.5 g Fibra · ~30 kcal (Consumo libre)</div>
+          </div>
+
+          <!-- 5. Una Mano Ahuecada -->
+          <div class="hand-measure-card carb-border">
+            <div class="hand-emoji">🫴</div>
+            <div class="hand-tag">MÓDULO 5 · GRANOS, CEREALES Y MENESTRAS</div>
+            <h3>1 Mano Ahuecada (Cuenco Simple)</h3>
+            <p class="hand-rule">Lo que cabe dentro de una sola mano formando un cuenco sin rebalsar (~1/2 a 2/3 taza).</p>
+            <ul class="hand-examples">
+              <li>🌾 Quinua cocida, arroz integral o arroz blanco (110–115 g)</li>
+              <li>🫘 Lentejas, garbanzos, frejoles o pallares cocidos (130 g)</li>
+              <li>🥣 4 cucharadas soperas de avena en hojuelas (40 g crudo)</li>
+            </ul>
+            <div class="hand-equiv">Aporta: 4–11 g Proteína · 22–28 g Carbohidratos · ~120–145 kcal</div>
+          </div>
+
+          <!-- 6. Dedo Pulgar Entero -->
+          <div class="hand-measure-card fat-border">
+            <div class="hand-emoji">👍</div>
+            <div class="hand-tag">MÓDULO 6 · GRASAS SALUDABLES DENSAS</div>
+            <h3>1 Dedo Pulgar Completo</h3>
+            <p class="hand-rule">Desde la base hasta la punta del pulgar (~1 cucharada sopera colmada).</p>
+            <ul class="hand-examples">
+              <li>🥑 1/4 de unidad mediana de palta / aguacate fuerte (50 g)</li>
+              <li>🥜 1 cucharada de mantequilla de maní o almendras 100% natural (18 g)</li>
+              <li>🫒 4 a 5 unidades de aceitunas de botija o verdes</li>
+            </ul>
+            <div class="hand-equiv">Aporta: 1–4 g Proteína · 2 g Carbs · 8–10 g Grasa buena · ~85–105 kcal</div>
+          </div>
+
+          <!-- 7. Punta del Pulgar -->
+          <div class="hand-measure-card fat-border">
+            <div class="hand-emoji">☝️</div>
+            <div class="hand-tag">MÓDULO 7 · ACEITES PUROS Y ADEREZOS</div>
+            <h3>1 Punta del Pulgar (Falange)</h3>
+            <p class="hand-rule">Solo la primera falange del dedo pulgar (~1 cucharadita de 5 ml).</p>
+            <ul class="hand-examples">
+              <li>🫒 1 cucharadita de aceite de oliva extra virgen o aceite de ajonjolí (5 g)</li>
+              <li>🧈 1 cucharadita rasa de mantequilla de vaca o ghee</li>
+              <li>🌱 1 cucharadita de semillas de chía o linaza</li>
+            </ul>
+            <div class="hand-equiv">Aporta: 0 g Proteína · 0 g Carbs · 5 g Lípidos puros · ~45 kcal</div>
+          </div>
+
+          <!-- 8. Puñado Centro de Palma -->
+          <div class="hand-measure-card fat-border">
+            <div class="hand-emoji">👌</div>
+            <div class="hand-tag">MÓDULO 8 · FRUTOS SECOS Y SEMILLAS</div>
+            <h3>1 Puñado Cerrado (Centro de Palma)</h3>
+            <p class="hand-rule">Lo que cabe en el hueco central de la palma pudiendo cerrar los dedos.</p>
+            <ul class="hand-examples">
+              <li>🌰 8 a 10 unidades de almendras naturales (20 g)</li>
+              <li>🥜 4 a 5 nueces enteras o pecanas (20 g)</li>
+              <li>🎃 2 cucharadas de semillas de calabaza o girasol</li>
+            </ul>
+            <div class="hand-equiv">Aporta: 4 g Proteína · 3.5 g Carbs · 11 g Grasa cardioprotectora · ~120 kcal</div>
+          </div>
+
+          <!-- 9. Dos Dedos Juntos -->
+          <div class="hand-measure-card protein-border">
+            <div class="hand-emoji">✌️</div>
+            <div class="hand-tag">MÓDULO 9 · QUESOS FRESCOS Y PORCIONES PLANAS</div>
+            <h3>2 Dedos Juntos (Índice + Medio)</h3>
+            <p class="hand-rule">El largo, ancho y grosor de tus dedos índice y medio juntos.</p>
+            <ul class="hand-examples">
+              <li>🧀 1 tajada mediana de queso fresco pasteurizado bajo en sal (40–45 g)</li>
+              <li>🍫 1 cuadradito de chocolate negro al 70–85% cacao (15–20 g)</li>
+            </ul>
+            <div class="hand-equiv">Queso fresco (45g): 8 g Proteína · 1 g Carbs · 6 g Grasa · ~90 kcal</div>
+          </div>
+
+          <!-- 10. Medidas Caseras Volumétricas -->
+          <div class="hand-measure-card carb-border">
+            <div class="hand-emoji">🥣</div>
+            <div class="hand-tag">MÓDULO 10 · MEDIDAS CASERAS (TAZA, VASO Y CUCHARA)</div>
+            <h3>Taza, Vaso y Cucharas Estándar</h3>
+            <p class="hand-rule">Equivalencias exactas de cocina cuando el alimento es líquido o semilíquido.</p>
+            <ul class="hand-examples">
+              <li>🥛 <strong>1 Taza / Vaso mediano (200–240 ml):</strong> Yogur griego (180g), leche o crema de verduras</li>
+              <li>🥄 <strong>1 Cucharada sopera (15 ml):</strong> 10–12 g de avena, quinua pop, semillas o aceite</li>
+              <li>🥄 <strong>1 Cucharadita de té (5 ml):</strong> 5 g de aceite, canela, cúrcuma o sal (máx. 1/2 cdta/día en HTA)</li>
+            </ul>
+            <div class="hand-equiv">Permite estandarizar sopas, batidos proteicos, lácteos y aliños en casa</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- TAB 5: HISTORIAL DE ALUMNOS GUARDADOS (LIMPIO Y PROFESIONAL)        -->
+      <!-- =================================================================== -->
+      <section id="tab-patients" class="tab-panel">
+        <header class="page-header compact-header">
+          <div>
+            <span class="eyebrow">REGISTRO CLÍNICO LOCAL DE CLIENTES EVALUADOS</span>
+            <h2>👥 Historial de Alumnos y Planes Guardados</h2>
+            <p>Consulta, reabre o imprime el plan nutricional y de entrenamiento de cualquiera de tus alumnos registrados.</p>
+          </div>
+        </header>
+
+        <div id="saved-patients-list" class="patients-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Barra de Navegación Inferior Móvil (Responsiva en Pantallas Pequeñas) -->
+  <nav class="mobile-bottom-nav">
+    <button type="button" class="mob-nav-btn active" data-tab="tab-evaluation">
+      <span>📋</span><small>Evaluar</small>
+    </button>
+    <button type="button" class="mob-nav-btn" data-tab="tab-plan">
+      <span>📅</span><small>Plan</small>
+    </button>
+    <button type="button" class="mob-nav-btn" data-tab="tab-macros-board">
+      <span>📊</span><small>Macros</small>
+    </button>
+    <button type="button" class="mob-nav-btn" data-tab="tab-hand-guide">
+      <span>🖐️</span><small>Medidas</small>
+    </button>
+    <button type="button" class="mob-nav-btn" data-tab="tab-patients">
+      <span>👥</span><small>Alumnos</small>
+    </button>
+  </nav>
+
+  <script src="food_vision_model_140.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
